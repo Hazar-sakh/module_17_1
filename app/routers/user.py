@@ -30,7 +30,7 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
 
 @router.get('/user_id/tasks')
 async def tasks_by_user_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    tasksByUserId = db.scalar(select(Task).where(Task.user_id == user_id))
+    tasksByUserId = db.scalars(select(Task).where(Task.user_id == user_id)).all()
     if tasksByUserId is not None:
         return tasksByUserId
     else:

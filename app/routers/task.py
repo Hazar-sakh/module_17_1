@@ -17,8 +17,8 @@ async def all_tasks(db: Annotated[Session, Depends(get_db)]):
 
 
 @router.get('/task_id')
-async def task_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    taskById = db.scalar(select(Task).where(Task.id == user_id))
+async def task_by_id(db: Annotated[Session, Depends(get_db)], tusk_id: int):
+    taskById = db.scalar(select(Task).where(Task.id == tusk_id))
     if taskById is not None:
         return taskById
     else:
@@ -49,14 +49,14 @@ async def create_task(db: Annotated[Session, Depends(get_db)], create_task: Crea
 
 
 @router.put('/update')
-async def update_task(db: Annotated[Session, Depends(get_db)], user_id: int, update_task: UpdateTask):
-    task_ = db.scalar(select(Task).where(Task.id == user_id))
+async def update_task(db: Annotated[Session, Depends(get_db)], tusk_id: int, update_task: UpdateTask):
+    task_ = db.scalar(select(Task).where(Task.id == tusk_id))
     if task_ is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Task was not found'
         )
-    db.execute(update(Task).where(Task.id == user_id).values(
+    db.execute(update(Task).where(Task.id == tusk_id).values(
         title=update_task.title,
         content=update_task.content,
         priority=update_task.priority,
